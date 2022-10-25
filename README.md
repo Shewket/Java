@@ -1,3 +1,4 @@
 # Java
-Spring + Vue Cli (Element)
-User management CURD 
+Tools: Spring + Vue Cli (Element)
+
+User management (CURD) 
