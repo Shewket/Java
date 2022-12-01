@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <div class="login">
+        <h1>Login</h1>
+        <form action="">
+            <input type="text" id="username" placeholder="Account">
+            <input type="password" id="password" placeholder="Password">
+            <button onclick="login()">Login</button>
+        </form>
+    </div>
+
+
+
+<script>
+
+
+    function login() {
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+        fetch('/login?username=' + username + '&password=' + password).then(res=>res.text()).then(res => {
+            if (res === 'success') {
+                // alert("success")
+                location.href = '/'
+            }else{
+                // alert("Fail to visit")
+            }
+        })
+    }
+
+    // get login
+    let loginAnime = document.querySelector('.login')
+
+    let span
+    let inTime, outTime
+    let isIn = true // default switch: open
+    let isOut
+
+    // mouse enter event
+    loginAnime.addEventListener('mouseenter',function(e)
+    {
+        isOut = false // default: close
+        if (isIn)
+        {
+            inTime = new Date().getTime()
+
+            // console.log(1);
+            // generate span element
+            span = document.createElement('span')
+            loginAnime.appendChild(span)
+
+            // span element use in animation
+            span.style.animation = 'in .5s ease-out forwards'
+
+            // calculate top and left value
+            let top = e.clientY - e.target.offsetTop
+            let left = e.clientX - e.target.offsetLeft
+
+            span.style.top = top + 'px'
+            span.style.left = left + 'px'
+
+            isIn = false    // close the switch when execute anime
+            isOut = true    //open the switch when in anime finish
+        }
+
+    })
+
+    // mouse out event
+    loginAnime.addEventListener('mouseleave',function(e)
+    {
+        if (isOut)
+        {
+            outTime = new Date().getTime()
+
+            let passTime = outTime - inTime
+
+            if (passTime < 500)
+            {
+                setTimeout(mouseleave, 500-passTime)    // drop passTime
+            }else{
+                mouseleave()
+            }
+        }
+
+        function mouseleave()
+        {
+            // console.log(2);
+            span.style.animation = 'out .5s ease-out forwards'
+
+            // calculate top and left value
+            let top = e.clientY - e.target.offsetTop
+            let left = e.clientX - e.target.offsetLeft
+
+            span.style.top = top + 'px'
+            span.style.left = left + 'px'
+
+            // note: set timer, because anime need time
+            setTimeout(function ()
+            {
+
+                isIn = true // when execute mouse leave event open again
+            }, 500)
+
+        }
+    })
+</script>
+</body>
+</html>
